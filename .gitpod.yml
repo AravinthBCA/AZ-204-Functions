@@ -5,6 +5,16 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - init: mvn install -DskipTests=false
+  - name: installing maven
+    init: mvn install -DskipTests=false
+  - name: Install the Microsoft package repository GPG key
+    init: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+          sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+  - name: Set up the APT source list before doing an APT update
+    init: sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs)-prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/dotnetdev.list'
+  - name: Start the APT source update
+    init: sudo apt-get update
+  - name: Install the Core Tools package
+    init: sudo apt-get install azure-functions-core-tools-4
 
 
