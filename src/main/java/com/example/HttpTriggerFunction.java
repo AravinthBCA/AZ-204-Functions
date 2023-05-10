@@ -27,7 +27,7 @@ public class HttpTriggerFunction {
                 name = "req",
                 methods = {HttpMethod.GET, HttpMethod.POST},
                 authLevel = AuthorizationLevel.ANONYMOUS,
-                route = "myfunction/{endpoint}")
+                route = "{endpoint}")
                 HttpRequestMessage<Optional<String>> request,
                 @BindingName("endpoint") String endpoint,
             final ExecutionContext context) {
