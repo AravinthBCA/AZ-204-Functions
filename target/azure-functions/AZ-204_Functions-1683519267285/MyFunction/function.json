@@ -1,0 +1,16 @@
+{
+  "scriptFile" : "../AZ-204_Functions-0.1.0-SNAPSHOT.jar",
+  "entryPoint" : "com.example.HttpTriggerFunction.run",
+  "bindings" : [ {
+    "type" : "httpTrigger",
+    "direction" : "in",
+    "name" : "req",
+    "route" : "{endpoint}",
+    "methods" : [ "GET", "POST" ],
+    "authLevel" : "ANONYMOUS"
+  }, {
+    "type" : "http",
+    "direction" : "out",
+    "name" : "$return"
+  } ]
+}
