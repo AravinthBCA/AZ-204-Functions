@@ -6,6 +6,7 @@ import com.microsoft.azure.functions.HttpRequestMessage;
 import com.microsoft.azure.functions.HttpResponseMessage;
 import com.microsoft.azure.functions.HttpStatus;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
+import com.microsoft.azure.functions.annotation.BindingName;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 
@@ -20,24 +21,35 @@ public class HttpTriggerFunction {
      * 1. curl -d "HTTP Body" {your host}/api/HttpExample
      * 2. curl "{your host}/api/HttpExample?name=HTTP%20Query"
      */
-    @FunctionName("HttpExample")
+    @FunctionName("MyFunction")
     public HttpResponseMessage run(
             @HttpTrigger(
                 name = "req",
                 methods = {HttpMethod.GET, HttpMethod.POST},
-                authLevel = AuthorizationLevel.ANONYMOUS)
+                authLevel = AuthorizationLevel.ANONYMOUS,
+                route = "myfunction/{endpoint}")
                 HttpRequestMessage<Optional<String>> request,
+                @BindingName("endpoint") String endpoint,
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
+            if("endpoint1".equals(endpoint)){
+                return request.createResponseBuilder(HttpStatus.OK).body("Hello this is endpoint1").build();
+            }
+            else if("endpoint2".equals(endpoint)){
+                return request.createResponseBuilder(HttpStatus.OK).body("Hello this is endpoint2").build();
+            }
+            else{
+                return request.createResponseBuilder(HttpStatus.OK).body("Hello this is common endpoint").build();
+            }
         // Parse query parameter
-        final String query = request.getQueryParameters().get("name");
-        final String name = request.getBody().orElse(query);
+        // final String query = request.getQueryParameters().get("name");
+        // final String name = request.getBody().orElse(query);
 
-        if (name == null) {
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name on the query string or in the request body").build();
-        } else {
-            return request.createResponseBuilder(HttpStatus.OK).body("Hello, " + name).build();
-        }
+        // if (name == null) {
+        //     return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name on the query string or in the request body").build();
+        // } else {
+        //     return request.createResponseBuilder(HttpStatus.OK).body("Hello, " + name).build();
+        // }
     }
 }
