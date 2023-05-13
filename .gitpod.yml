@@ -16,5 +16,3 @@ tasks:
     init: sudo apt-get update
   - name: Install the Core Tools package
     init: sudo apt-get install azure-functions-core-tools-4
-
-
